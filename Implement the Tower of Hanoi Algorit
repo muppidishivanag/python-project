@@ -1,0 +1,28 @@
+def hanoi_solver(n):
+    rods = [list(range(n, 0, -1)), [], []]
+    moves = []
+
+    def record():
+        moves.append(" ".join(str(rod) for rod in rods))
+
+    def move_disk(source, destination):
+        disk = rods[source].pop()
+        rods[destination].append(disk)
+        record()
+
+    def solve(disks, source, auxiliary, destination):
+        if disks == 1:
+            move_disk(source, destination)
+            return
+
+        solve(disks - 1, source, destination, auxiliary)
+        move_disk(source, destination)
+        solve(disks - 1, auxiliary, source, destination)
+
+    # Record the starting arrangement
+    record()
+
+    # Solve the puzzle
+    solve(n, 0, 1, 2)
+
+    return "\n".join(moves)
